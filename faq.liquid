@@ -1,0 +1,141 @@
+{% style %}
+  .padding--{{ section.id }} {
+    padding-top: {{ section.settings.mobile_padding_top }}px;
+    padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .padding--{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{% endstyle %}
+
+{{ 'faq-section.css' | asset_url | stylesheet_tag }}
+{{ 'faq-section.js' | asset_url | script_tag }}
+
+<div class="faq-section_conatiner padding--{{ section.id }} color-{{ section.settings.color_scheme }}">
+  <div class="faq-section_wrapper">
+    {% if section.settings.faq_section_title != blank %}
+      <h2 class="faq-section_title scroll-fade-up">{{ section.settings.faq_section_title }}</h2>
+    {% endif %}
+    {% if section.settings.faq_section_description != blank %}
+      <p class="faq-section_description scroll-fade-up">{{ section.settings.faq_section_description }}</p>
+    {% endif %}
+    <div class="faq-section-block_flex scroll-fade-up">
+      {% for block in section.blocks %}
+        <div class="faq-section-block_container">
+          <button class="faq-section-block_question">
+            {{ block.settings.faq_question }}
+            <span class="faq-icon">+</span>
+          </button>
+          <p class="faq-section-block_answer">{{ block.settings.faq_answer }}</p>
+        </div>
+      {% endfor %}
+      {% if section.settings.faq_section_button_link != blank %}
+        <a class="faq-section_btn" href="{{ section.settings.faq_section_button_link }}">
+          {{- section.settings.faq_section_button_label -}}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "FAQ Section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "Padding Top (Mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "Padding Bottom (Mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "text",
+      "id": "faq_section_title",
+      "label": "Section Title"
+    },
+    {
+      "type": "textarea",
+      "id": "faq_section_description",
+      "label": "Section Description"
+    },
+    {
+      "type": "text",
+      "id": "faq_section_button_label",
+      "label": "Button Label",
+      "default": "Read More"
+    },
+    {
+      "type": "url",
+      "id": "faq_section_button_link",
+      "label": "Button Redirection Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq-block",
+      "name": "FAQ Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "faq_question",
+          "label": "Question Block"
+        },
+        {
+          "type": "textarea",
+          "id": "faq_answer",
+          "label": "Answer Block"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Section"
+    }
+  ]
+}
+{% endschema %}
